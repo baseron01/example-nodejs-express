@@ -16,7 +16,7 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: docker login ${URL_DOCKER} -u ${USER_DOCKER}  -p ${PASSWORD_DOCKER}
+      - run: docker login $URL_DOCKER -u $USER_DOCKER  -p $PASSWORD_DOCKER
       - run:
           name: "Build Docker"
           command:  |
