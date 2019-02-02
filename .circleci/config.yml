@@ -16,7 +16,8 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: docker login registry.gitlab.com -u $USER_DOCKER  -p $PASSWORD_DOCKER
+      - setup_remote_docker
+      - run: docker login $URL_DOCKER -u $USER_DOCKER  -p $PASSWORD_DOCKER
       - run:
           name: "Build Docker"
           command:  |
