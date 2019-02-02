@@ -36,6 +36,6 @@ jobs:
               etlweather/gaucho upgrade $SEVICE_ID \
               --imageUuid 'registry.gitlab.com/tawai.global/nodedemocircle-ci:latest' \
               --batch_size 1 --start_first \
-              --auto_complete --time 600 \
+              --auto_complete --timeout 600 \
               /
       - run: echo Done
