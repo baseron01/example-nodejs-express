@@ -16,4 +16,13 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+      - run: docker login $URL_DOCKER -u $USER_DOCKER  -p $PASSWORD_DOCKER
+      - run:
+          name: "Build Docker"
+          command:  |
+              cp Dockerfile.production  Dockerfile
+              docker build -t registry.gitlab.com/tawai.global/nodedemocircle-ci:latest .
+              docker build -t registry.gitlab.com/tawai.global/nodedemocircle-ci:${VER} .
+              docker push registry.gitlab.com/tawai.global/nodedemocircle-ci:latest
+              docker push registry.gitlab.com/tawai.global/nodedemocircle-ci:${VER}
       - run: echo Done
