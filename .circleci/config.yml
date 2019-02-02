@@ -34,7 +34,7 @@ jobs:
               -e CATTLE_SECRET_KEY="$CATTLE_SECRET_KEY" \
               -e CATTLE_URL="$CATTLE_URL" \
               etlweather/gaucho upgrade $SEVICE_ID \
-              --imageUuid 'registry.gitlab.com/tawai.global/nodedemocircle-ci:latest' \
+              --imageUuid 'docker:registry.gitlab.com/tawai.global/nodedemocircle-ci:latest' \
               --batch_size 1 --start_first \
               --auto_complete --timeout 600 \
               /
