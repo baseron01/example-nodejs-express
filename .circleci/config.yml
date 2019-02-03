@@ -57,6 +57,7 @@ jobs:
       - image: circleci/node:8.11.1-stretch
     steps :
       - checkout
+      - run: docker login $URL_DOCKER -u $USER_DOCKER  -p $PASSWORD_DOCKER
       - run :
           name: "Deploy"
           command: |
