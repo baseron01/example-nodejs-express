@@ -19,7 +19,7 @@ jobs:
     docker:
       - image : circleci/node:8.11.1-stretch
     working_directory : ~/repo
-    step:
+    steps:
       - checkout
       - restore_cache :
           keys:
