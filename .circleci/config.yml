@@ -1,8 +1,6 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: circleci/node:8.11.1-stretch
     working_directory: ~/repo
     steps:
       - checkout
@@ -16,16 +14,6 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - setup_remote_docker
-      - run: docker login $URL_DOCKER -u $USER_DOCKER  -p $PASSWORD_DOCKER
-      - run:
-          name: "Build Docker"
-          command:  |
-              cp Dockerfile.production  Dockerfile
-              docker build -t registry.gitlab.com/tawai.global/nodedemocircle-ci:latest .
-              docker build -t registry.gitlab.com/tawai.global/nodedemocircle-ci:${VER} .
-              docker push registry.gitlab.com/tawai.global/nodedemocircle-ci:latest
-              docker push registry.gitlab.com/tawai.global/nodedemocircle-ci:${VER}
       - run:
           name: "Deploy Docker"
           command:  |
@@ -38,3 +26,58 @@ jobs:
               --batch_size 1 --start_first \
               --auto_complete --timeout 600
       - run: echo Done
+  test:
+    docker:
+      - image : circleci/node:8.11.1-stretch
+    working_directory : ~/repo
+    step:
+      - checkout
+      - restore_cache :
+          keys:
+            - v1-dependencies-{{checksum "package.json"}}
+            - v1-dependencies-
+      - run : npm-install
+      - save_cache :
+          paths:
+            - node_modules
+          key: v1-dependencies-{{checksum "package.json"}}
+      - run : npm test
+  ship:
+    docker:
+        - image: circleci/node:8.11.1-stretch
+    step:
+      - setup_remote_docker
+      - run: docker login $URL_DOCKER -u $USER_DOCKER  -p $PASSWORD_DOCKER
+      - run:
+          name: "Build Docker"
+          command:  |
+              cp Dockerfile.production  Dockerfile
+              docker build -t registry.gitlab.com/tawai.global/nodedemocircle-ci:latest .
+              docker build -t registry.gitlab.com/tawai.global/nodedemocircle-ci:${VER}
+  deploy:
+    step:
+      - run :
+          name: "Deploy"
+          command: |
+            docker push registry.gitlab.com/tawai.global/nodedemocircle-ci:latest .
+            docker push registry.gitlab.com/tawai.global/nodedemocircle-ci:${VER}
+  workflows:
+    version: 2
+    build_test_ship_deploy:
+      jobs:
+        - build
+        - test:
+            requires:
+              - build
+        - ship:
+            requires:
+              - build
+              - test
+        - deploy:
+            requires:
+              - build
+              - test
+              - ship
+
+
+
