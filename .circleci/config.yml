@@ -16,18 +16,6 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run:
-          name: "Deploy Docker"
-          command:  |
-              docker run --rm -it \
-              -e CATTLE_ACCESS_KEY="$CATTLE_ACCESS_KEY" \
-              -e CATTLE_SECRET_KEY="$CATTLE_SECRET_KEY" \
-              -e CATTLE_URL="$CATTLE_URL" \
-              etlweather/gaucho upgrade $SEVICE_ID \
-              --imageUuid 'docker:registry.gitlab.com/tawai.global/nodedemocircle-ci:latest' \
-              --batch_size 1 --start_first \
-              --auto_complete --timeout 600
-      - run: echo Done
   test:
     docker:
       - image : circleci/node:8.11.1-stretch
@@ -57,6 +45,8 @@ jobs:
               docker build -t registry.gitlab.com/tawai.global/nodedemocircle-ci:latest .
               docker build -t registry.gitlab.com/tawai.global/nodedemocircle-ci:${VER}
   deploy:
+    docker:
+      - image: circleci/node:8.11.1-stretch
     step:
       - run :
           name: "Deploy"
