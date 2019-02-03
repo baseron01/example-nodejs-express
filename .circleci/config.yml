@@ -49,8 +49,8 @@ jobs:
           command:  |
               cp Dockerfile.production  Dockerfile
               docker build -t registry.gitlab.com/tawai.global/nodedemocircle-ci:latest .
-              docker build -t registry.gitlab.com/tawai.global/nodedemocircle-ci:${VER} /
-              docker push registry.gitlab.com/tawai.global/nodedemocircle-ci:latest /
+              docker build -t registry.gitlab.com/tawai.global/nodedemocircle-ci:${VER} .
+              docker push registry.gitlab.com/tawai.global/nodedemocircle-ci:latest
               docker push registry.gitlab.com/tawai.global/nodedemocircle-ci:${VER}
   deploy:
     docker:
