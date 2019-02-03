@@ -1,3 +1,4 @@
+version: 2
 jobs:
   build:
     docker:
@@ -68,20 +69,20 @@ jobs:
               --auto_complete --timeout 600
       - run: echo Done
 
-  workflows:
-    version: 2
-    build_test_ship_deploy:
-      jobs:
-        - build
-        - test:
-            requires:
-              - build
-        - ship:
-            requires:
-              - build
-              - test
-        - deploy:
-            requires:
-              - ship
+workflows:
+  version: 2
+  build_test_ship_deploy:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - ship:
+          requires:
+            - build
+            - test
+      - deploy:
+          requires:
+            - ship
 
 
