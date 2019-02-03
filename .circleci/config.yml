@@ -53,23 +53,6 @@ jobs:
           command: |
             docker push registry.gitlab.com/tawai.global/nodedemocircle-ci:latest .
             docker push registry.gitlab.com/tawai.global/nodedemocircle-ci:${VER}
-  workflows:
-    version: 2
-    build_test_ship_deploy:
-      jobs:
-        - build
-        - test:
-            requires:
-              - build
-        - ship:
-            requires:
-              - build
-              - test
-        - deploy:
-            requires:
-              - build
-              - test
-              - ship
 
 
 
