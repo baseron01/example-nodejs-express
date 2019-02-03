@@ -42,6 +42,11 @@ jobs:
           keys:
             - v1-dependencies-{{checksum "package.json"}}
             - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
       - setup_remote_docker
       - run: docker login $URL_DOCKER -u $USER_DOCKER  -p $PASSWORD_DOCKER
       - run:
