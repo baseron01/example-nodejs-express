@@ -73,17 +73,15 @@ jobs:
     build_test_ship_deploy:
       jobs:
         - build
-        - test :
+        - test:
             requires:
               - build
-        - ship :
-            requires:
-              - build
-              - test
-        - deploy :
+        - ship:
             requires:
               - build
               - test
+        - deploy:
+            requires:
               - ship
 
 
