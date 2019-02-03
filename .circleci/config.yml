@@ -25,7 +25,7 @@ jobs:
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
-            # fallback 
+            # fallback
             - v1-dependencies-
       - run: npm install
       - save_cache:
@@ -49,7 +49,7 @@ jobs:
           command:  |
               cp Dockerfile.production  Dockerfile
               docker build -t registry.gitlab.com/tawai.global/nodedemocircle-ci:latest .
-              docker build -t registry.gitlab.com/tawai.global/nodedemocircle-ci:${VER}
+              docker build -t registry.gitlab.com/tawai.global/nodedemocircle-ci:${VER} .
               docker push registry.gitlab.com/tawai.global/nodedemocircle-ci:latest .
               docker push registry.gitlab.com/tawai.global/nodedemocircle-ci:${VER}
   deploy:
